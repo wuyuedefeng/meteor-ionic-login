@@ -1,4 +1,12 @@
+Router.route('register', {
+    name: 'register'
+});
+
 Router.route('/', {
+    name: 'login'
+});
+
+Router.route('trending', {
   name: 'trending'
 });
 
