@@ -111,9 +111,6 @@ var findUserFromUserQuery = function (user) {
 
     var user = Meteor.users.findOne(selector);
 
-    console.log('------------');
-    console.log(selector);
-
     if (!user)
         throw new Meteor.Error(403, "User not found1");
 

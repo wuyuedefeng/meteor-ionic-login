@@ -2,11 +2,24 @@ Router.route('register', {
     name: 'register'
 });
 
-Router.route('/', {
+Router.route('login', {
     name: 'login'
 });
 
-Router.route('trending', {
+//onBeforeAction
+Router.onBeforeAction(function () {
+    var temName = Router.current() && Router.current().route.getName();
+    if(temName !== 'register'){
+        if (!Meteor.userId()) {
+            // if the user is not logged in, render the Login template
+            this.redirect('login');
+        }
+    }
+    this.next();
+});
+
+
+Router.route('/', {
   name: 'trending'
 });
 

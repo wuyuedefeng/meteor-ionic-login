@@ -1,3 +1,6 @@
+Template.login.rendered = function(){
+    alert(Meteor.userId());
+}
 Template.login.events({
     'submit form':function(e){
         e.preventDefault();
@@ -15,7 +18,9 @@ Template.login.events({
 
         Meteor.loginWithPhoneAndPassword({phone:phone}, password, function(error){
             if(error){
-                alert(error);
+                if(error.error == 403){
+                    alert('手机号还没有注册');
+                }
             }else{
                 Router.go('trending');
             }

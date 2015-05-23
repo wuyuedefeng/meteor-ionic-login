@@ -23,7 +23,9 @@ Template.register.events({
 
         Accounts.createUserWithPhone({phone:phone, password:password}, function (error){
             if(error){
-                alert(error);
+                if(error.error == 403){
+                    alert('手机号已经注册');
+                }
             }else{
                 Meteor.loginWithPhoneAndPassword({phone:phone}, password, function(error){
                     if(error){
