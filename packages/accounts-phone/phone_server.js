@@ -6,7 +6,7 @@ var AccountGlobalConfigs = {
     verificationCodeLength             : 4,
     verificationMaxRetries             : 2,
     forbidClientAccountCreation        : false,
-    sendPhoneVerificationCodeOnCreation: true
+    sendPhoneVerificationCodeOnCreation: false
 };
 
 _.defaults(Accounts._options, AccountGlobalConfigs);
@@ -110,8 +110,12 @@ var findUserFromUserQuery = function (user) {
     var selector = selectorFromUserQuery(user);
 
     var user = Meteor.users.findOne(selector);
+
+    console.log('------------');
+    console.log(selector);
+
     if (!user)
-        throw new Meteor.Error(403, "User not found");
+        throw new Meteor.Error(403, "User not found1");
 
     return user;
 };
@@ -508,6 +512,7 @@ var createUser = function (options) {
     }));
 
     var phone = options.phone;
+
     if (!phone)
         throw new Meteor.Error(400, "Need to set phone");
 
@@ -515,7 +520,7 @@ var createUser = function (options) {
         {'phone.number': phone});
 
     if (existingUser) {
-        throw new Meteor.Error(403, "User with this phone number already exists");
+        throw new Meteor.Error(403, "该手机号已经存在");
     }
 
     var user = {services: {}};
@@ -536,7 +541,7 @@ var createUser = function (options) {
         var match = e.err.match(/E11000 duplicate key error index: ([^ ]+)/);
         if (!match) throw e;
         if (match[1].indexOf('users.$phone.number') !== -1)
-            throw new Meteor.Error(403, "Phone number already exists, failed on creation.");
+            throw new Meteor.Error(403, "手机号码已存在，创建失败");
         throw e;
     }
 };
@@ -669,11 +674,17 @@ var cloneAttemptWithConnection = function (connection, attempt) {
 
 // Return normalized phone format
 var normalizePhone = function (phone) {
+    //sen
+    return phone;
+
     // If phone equals to one of admin phone numbers return it as-is
     if (phone && Accounts._options.adminPhoneNumbers && Accounts._options.adminPhoneNumbers.indexOf(phone) != -1) {
         return phone;
     }
+
     return Phone(phone)[0];
+
+
 };
 
 /**

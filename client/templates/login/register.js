@@ -10,6 +10,7 @@ Template.register.events({
             alert("输入手机号不合法");
             return ;
         }
+
         // TODO: get password
         var password = $target.find('[name=password]').val();
         // TODO: get password_again
@@ -20,13 +21,18 @@ Template.register.events({
             return ;
         }
 
-        Accounts.createUserWithPhone({phone:phone, password:password}, function (error,userId){
+        Accounts.createUserWithPhone({phone:phone, password:password}, function (error){
             if(error){
                 alert(error);
             }else{
-                alert(userId);
+                Meteor.loginWithPhoneAndPassword({phone:phone}, password, function(error){
+                    if(error){
+                        alert(error);
+                    }else{
+                        Router.go('trending');
+                    }
+                });
             }
         });
     }
-
 });
