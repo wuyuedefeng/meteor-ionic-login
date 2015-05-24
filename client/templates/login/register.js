@@ -21,7 +21,9 @@ Template.register.events({
             return ;
         }
 
+        IonLoading.show();
         Accounts.createUserWithPhone({phone:phone, password:password}, function (error){
+            IonLoading.hide();
             if(error){
                 if(error.error == 403){
                     alert('手机号已经注册');

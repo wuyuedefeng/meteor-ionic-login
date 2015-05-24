@@ -1,6 +1,3 @@
-Template.login.rendered = function(){
-    alert(Meteor.userId());
-}
 Template.login.events({
     'submit form':function(e){
         e.preventDefault();
@@ -16,7 +13,9 @@ Template.login.events({
         // TODO: get password
         var password = $target.find('[name=password]').val();
 
+        IonLoading.show();
         Meteor.loginWithPhoneAndPassword({phone:phone}, password, function(error){
+            IonLoading.hide();
             if(error){
                 if(error.error == 403){
                     alert('手机号还没有注册');
